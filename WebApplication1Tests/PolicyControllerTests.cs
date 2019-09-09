@@ -44,6 +44,7 @@ namespace WebApplication1Tests
 
             // Assert
             Assert.AreEqual(8, response.Count);
+            Assert.IsTrue(response.IndexOf(newPolicy) > -1);
         }
 
         [TestMethod]
@@ -68,6 +69,7 @@ namespace WebApplication1Tests
 
             // Assert
             Assert.AreEqual(7, response.Count);
+            Assert.IsTrue(response.IndexOf(updatePolicy) > -1);
         }
 
 
