@@ -9,6 +9,7 @@ import {
 } from "@angular/core";
 import { Policy } from "../types/policy.type";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-policy",
@@ -17,23 +18,32 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 })
 export class PolicyComponent implements OnInit {
   @Input() policy: Policy;
-  @Output() delete: EventEmitter<number> = new EventEmitter();
-  @Output() saveChanges: EventEmitter<Policy> = new EventEmitter();
-  public policyForm: FormGroup;
+  @Input() addPolicy: boolean;
+  @Input() primaryButtonText: string = "OK";
+  @Input() secondaryButtonText: string = "Cancel";
+  @Output() primaryClick: EventEmitter<Policy> = new EventEmitter();
+  @Output() secondaryClick: EventEmitter<Policy> = new EventEmitter();
 
-  constructor() {}
+  constructor(private _snackBar: MatSnackBar) {}
 
-  ngOnInit() {
-    this.policyForm = new FormGroup({
-      policyNumber: new FormControl("", [Validators.required]),
-      policyHolderName: new FormControl("", [Validators.required]),
-      policyHolderAge: new FormControl("", [Validators.required]),
-      policyHolderGender: new FormControl("", [Validators.required])
-    });
+  ngOnInit() {}
+
+  primaryButtonClicked(policyForm) {
+    if (policyForm.valid) {
+      console.log(this.policy);
+      this.primaryClick.emit(this.policy);
+    } else {
+      this.showMessage("Data entered is invalid.");
+    }
   }
 
-  save($event) {
-    console.log(this.policy);
-    this.saveChanges.emit(this.policy);
+  secondaryButtonClicked(policyForm) {
+    this.secondaryClick.emit(this.policy);
+  }
+
+  showMessage(message: string) {
+    this._snackBar.open(message, "Dismiss", {
+      duration: 2000
+    });
   }
 }

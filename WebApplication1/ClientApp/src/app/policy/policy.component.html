@@ -1,9 +1,21 @@
 <mat-card class="example-card">
-  <form>
+  <form #policyForm="ngForm">
     <mat-card-header class="example-card__header">
-      <mat-card-title
+      <mat-card-title *ngIf="!addPolicy"
         >Policy Number:&nbsp;{{ policy.policyNumber }}</mat-card-title
       >
+      <mat-form-field *ngIf="addPolicy">
+        <mat-label>Policy Number</mat-label>
+        <input
+          matInput
+          type="number"
+          required
+          class="form-control"
+          id="policyNumber"
+          [(ngModel)]="policy.policyNumber"
+          name="policyNumber"
+        />
+      </mat-form-field>
     </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content>
@@ -55,18 +67,19 @@
     </mat-card-content>
     <mat-card-actions [align]="'end'">
       <button
+        *ngIf="policyForm.dirty"
         mat-raised-button
         color="primary"
-        (click)="save(policy.policyNumber)"
+        (click)="primaryButtonClicked(policyForm)"
       >
-        Save
+        {{ primaryButtonText }}
       </button>
       <button
         mat-raised-button
         color="warn"
-        (click)="delete.emit(policy.policyNumber)"
+        (click)="secondaryButtonClicked(policyForm)"
       >
-        Delete
+        {{ secondaryButtonText }}
       </button>
     </mat-card-actions>
   </form>

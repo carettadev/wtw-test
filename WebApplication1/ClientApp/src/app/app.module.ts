@@ -15,8 +15,15 @@ import { MatInputModule } from "@angular/material";
 import { MatSelectModule } from "@angular/material/select";
 import { FormsModule } from "@angular/forms";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatDialogModule } from "@angular/material/dialog";
+import { AddPolicyDialogComponent } from "./add-policy-dialog/add-policy-dialog.component";
 @NgModule({
-  declarations: [AppComponent, PolicyListComponent, PolicyComponent],
+  declarations: [
+    AppComponent,
+    PolicyListComponent,
+    PolicyComponent,
+    AddPolicyDialogComponent
+  ],
   imports: [
     HttpClientModule,
     BrowserModule,
@@ -30,8 +37,10 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
     MatInputModule,
     MatSelectModule,
     FormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule
   ],
+  entryComponents: [AddPolicyDialogComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

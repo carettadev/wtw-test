@@ -1,7 +1,13 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Inject } from "@angular/core";
 import { PolicyService } from "../policy.service";
 import { Policy } from "../types/policy.type";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA
+} from "@angular/material/dialog";
+import { AddPolicyDialogComponent } from "../add-policy-dialog/add-policy-dialog.component";
 
 @Component({
   selector: "app-policy-list",
@@ -11,7 +17,11 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 export class PolicyListComponent implements OnInit {
   policies: Policy[] = [];
 
-  constructor(public api: PolicyService, private _snackBar: MatSnackBar) {}
+  constructor(
+    public api: PolicyService,
+    private _snackBar: MatSnackBar,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.getPolicies();
@@ -25,8 +35,18 @@ export class PolicyListComponent implements OnInit {
     });
   }
 
-  add() {
-    // this.router.navigate(['/product-add']);
+  addPolicy(policy: Policy) {
+    this.api.addPolicy(policy).subscribe(
+      (data: Policy[]) => {
+        console.log(data);
+        this.policies = data;
+        this.showMessage("Successfully added");
+      },
+      err => {
+        console.log(err);
+        this.showMessage("Error occured");
+      }
+    );
   }
 
   savePolicy(policy: Policy) {
@@ -38,12 +58,13 @@ export class PolicyListComponent implements OnInit {
       },
       err => {
         console.log(err);
+        this.showMessage("Error occured");
       }
     );
   }
 
-  deletePolicy(id: number) {
-    this.api.deletePolicy(id).subscribe(
+  deletePolicy(policy: Policy) {
+    this.api.deletePolicy(policy.policyNumber).subscribe(
       (data: Policy[]) => {
         console.log(data);
         this.policies = data;
@@ -51,6 +72,7 @@ export class PolicyListComponent implements OnInit {
       },
       err => {
         console.log(err);
+        this.showMessage("Error occured");
       }
     );
   }
@@ -58,6 +80,27 @@ export class PolicyListComponent implements OnInit {
   showMessage(message: string) {
     this._snackBar.open(message, "Dismiss", {
       duration: 2000
+    });
+  }
+
+  openAddPolicyDialog(): void {
+    const initPolicy: Policy = {
+      policyNumber: null,
+      policyHolder: {
+        name: null,
+        age: null,
+        gender: null
+      }
+    };
+    const dialogRef = this.dialog.open(AddPolicyDialogComponent, {
+      width: "80%",
+      data: initPolicy
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) this.addPolicy(result);
+      console.log("The dialog was closed");
+      //this.animal = result;
     });
   }
 }

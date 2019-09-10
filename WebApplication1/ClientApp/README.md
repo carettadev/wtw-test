@@ -1,5 +1,18 @@
 # ClientApp
 
+NOTES On Solution:
+
+Server Side
+  - Only basic unit tests
+  - Needs logic in repository to check for already exists before add/update/delete
+  - Doesn't return detailed errors to client of any problem
+Client Side
+  - Needs more validation on inputs and better error messages
+  - 
+
+
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.3.
 
 ## Development server

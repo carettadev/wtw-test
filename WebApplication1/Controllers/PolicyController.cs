@@ -27,7 +27,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                if (policyNumber == policy.PolicyNumber)
+                if (policy != null && policyNumber == policy.PolicyNumber)
                 {
                     _policyRepository.Update(policy);
                 }
@@ -45,7 +45,10 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                _policyRepository.Add(policy);
+                if (policy != null)
+                {
+                    _policyRepository.Add(policy);
+                }
             }
             catch (Exception ex)
             {

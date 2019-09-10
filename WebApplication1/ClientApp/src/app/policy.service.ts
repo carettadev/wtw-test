@@ -36,13 +36,14 @@ export class PolicyService {
       }
     };
   }
-  // addProduct (product): Observable<any> {
-  //   console.log(product);
-  //   return this.http.post<any>(endpoint + 'products', JSON.stringify(product), httpOptions).pipe(
-  //     tap((product) => console.log(`added product w/ id=${product.id}`)),
-  //     catchError(this.handleError<any>('addProduct'))
-  //   );
-  // }
+
+  addPolicy(policy: Policy): Observable<Policy[]> {
+    return this.http
+      .post(endpoint + "policy/", JSON.stringify(policy), httpOptions)
+      .pipe(
+        map((data: any[]) => data.map((item: any) => this.mapPolicy(item)))
+      );
+  }
 
   updatePolicy(policy: Policy): Observable<Policy[]> {
     return this.http

@@ -1,10 +1,16 @@
 <mat-toolbar color="primary">
   <span>Policy List</span>
+  <span class="header-spacer"></span>
+  <button mat-raised-button color="accent" (click)="openAddPolicyDialog()">
+    Add new
+  </button>
 </mat-toolbar>
 <ng-container *ngFor="let p of policies">
   <app-policy
     [policy]="p"
-    (delete)="deletePolicy($event)"
-    (saveChanges)="savePolicy($event)"
+    primaryButtonText="Save"
+    secondaryButtonText="Delete"
+    (secondaryClick)="deletePolicy($event)"
+    (primaryClick)="savePolicy($event)"
   ></app-policy>
 </ng-container>
