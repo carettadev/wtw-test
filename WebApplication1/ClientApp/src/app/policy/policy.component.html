@@ -1,0 +1,73 @@
+<mat-card class="example-card">
+  <form>
+    <mat-card-header class="example-card__header">
+      <mat-card-title
+        >Policy Number:&nbsp;{{ policy.policyNumber }}</mat-card-title
+      >
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <mat-grid-list cols="3" rowHeight="100px" *ngIf="policy.policyHolder">
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input
+              matInput
+              required
+              class="form-control"
+              id="name"
+              [(ngModel)]="policy.policyHolder.name"
+              name="name"
+            />
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <mat-form-field>
+            <mat-label>Age</mat-label>
+            <input
+              matInput
+              type="number"
+              required
+              class="form-control"
+              id="age"
+              [(ngModel)]="policy.policyHolder.age"
+              name="age"
+            />
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <mat-form-field>
+            <mat-label>Gender</mat-label>
+            <select
+              matNativeControl
+              required
+              class="form-control"
+              id="gender"
+              [(ngModel)]="policy.policyHolder.gender"
+              name="gender"
+            >
+              <option value="0">Male</option>
+              <option value="1">Female</option>
+            </select>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card-content>
+    <mat-card-actions [align]="'end'">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="save(policy.policyNumber)"
+      >
+        Save
+      </button>
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="delete.emit(policy.policyNumber)"
+      >
+        Delete
+      </button>
+    </mat-card-actions>
+  </form>
+</mat-card>

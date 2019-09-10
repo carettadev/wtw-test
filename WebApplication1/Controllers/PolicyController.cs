@@ -18,7 +18,7 @@ namespace WebApplication1.Controllers
 
         public IEnumerable<Policy> Get()
         {
-            return _policyRepository.Get();
+            return _policyRepository.Get().OrderBy(policy => policy.PolicyNumber);
         }
 
 

@@ -1,0 +1,10 @@
+<mat-toolbar color="primary">
+  <span>Policy List</span>
+</mat-toolbar>
+<ng-container *ngFor="let p of policies">
+  <app-policy
+    [policy]="p"
+    (delete)="deletePolicy($event)"
+    (saveChanges)="savePolicy($event)"
+  ></app-policy>
+</ng-container>
