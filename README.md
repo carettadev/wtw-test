@@ -3,13 +3,16 @@
 It is a working solution with some unit tests and e2e tests. I would make a more complete test suite in real scenario.
 
 Some other notes on my Solution:
+
 Server Side
 
 - Only basic unit tests
 - Made an assumption that the repository code could not be changed
 - No exception logging
 - No server side validation
-  Client Side
+
+Client Side
+
 - Needs more validation on inputs and better user error messages
 - Needs warning dialog on delete to confirm action with user
 - better error logging required. just logging to console at the moment
@@ -18,6 +21,7 @@ Server Side
 - ideally protractor tests should run be against mocks. disabled CORS on server side to get around this. Need to ensure to restart backend before running ng e2e to ensure data is in consistent state
 
 Requirements
+
 Info:
 
 The solution contains a standard Asp.Net Core project with an Angular cli project. Using Visual Studio F5 will build both the server side and client side code and launch the website.
