@@ -29,58 +29,51 @@ export class PolicyListComponent implements OnInit {
 
   getPolicies() {
     this.policies = [];
-    this.api.getPolicies().subscribe((data: Policy[]) => {
-      console.log(data);
-      this.policies = data;
-    });
+    this.api.getPolicies().subscribe(        
+      this.handleResponse(null),
+      this.handleError
+    );
   }
 
   addPolicy(policy: Policy) {
     this.api.addPolicy(policy).subscribe(
-      (data: Policy[]) => {
-        console.log(data);
-        this.policies = data;
-        this.showMessage("Successfully added");
-      },
-      err => {
-        console.log(err);
-        this.showMessage("Error occured");
-      }
+        this.handleResponse("Successfully added"),
+        this.handleError
     );
   }
 
   savePolicy(policy: Policy) {
     this.api.updatePolicy(policy).subscribe(
-      (data: Policy[]) => {
-        console.log(data);
-        this.policies = data;
-        this.showMessage("Successfully updated");
-      },
-      err => {
-        console.log(err);
-        this.showMessage("Error occured");
-      }
+        this.handleResponse("Successfully updated"),
+        this.handleError
     );
   }
 
   deletePolicy(policy: Policy) {
     this.api.deletePolicy(policy.policyNumber).subscribe(
-      (data: Policy[]) => {
-        console.log(data);
-        this.policies = data;
-        this.showMessage("Successfully deleted");
-      },
-      err => {
-        console.log(err);
-        this.showMessage("Error occured");
-      }
+      this.handleResponse("Deleted successfully"),
+      this.handleError
     );
   }
 
+  handleResponse(successMessage) {
+    return (data: Policy[]) => {
+      this.policies = data;
+      this.showMessage(successMessage);
+    }
+  }
+
+  handleError(err) {
+    console.log(err); //TODO: Better error logging required here
+    this.showMessage("Error occured");
+  }
+
   showMessage(message: string) {
-    this._snackBar.open(message, "Dismiss", {
-      duration: 2000
-    });
+    if (message) {
+      this._snackBar.open(message, "Dismiss", {
+        duration: 2000
+      });
+    }
   }
 
   openAddPolicyDialog(): void {
@@ -99,8 +92,6 @@ export class PolicyListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) this.addPolicy(result);
-      console.log("The dialog was closed");
-      //this.animal = result;
     });
   }
 }

@@ -30,7 +30,6 @@ export class PolicyComponent implements OnInit {
 
   primaryButtonClicked(policyForm) {
     if (policyForm.valid) {
-      console.log(this.policy);
       this.primaryClick.emit(this.policy);
     } else {
       this.showMessage("Data entered is invalid.");

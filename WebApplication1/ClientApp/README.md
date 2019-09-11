@@ -4,11 +4,14 @@ NOTES On Solution:
 
 Server Side
   - Only basic unit tests
-  - Needs logic in repository to check for already exists before add/update/delete
-  - Doesn't return detailed errors to client of any problem
+  - Made an assumption that the repository code could not be changed
+  - Doesn't return any detailed errors/HTTP Codes to client when an exception occurs
+  - No exception logging
+  - No server side validation
 Client Side
-  - Needs more validation on inputs and better error messages
-  - 
+  - Needs more validation on inputs and better user error messages
+  - Needs warning dialog on delete to confirm action with user
+  - better error logging required. just logging to console at the moment
 
 
 
