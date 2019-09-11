@@ -29,38 +29,42 @@ export class PolicyListComponent implements OnInit {
 
   getPolicies() {
     this.policies = [];
-    this.api.getPolicies().subscribe(        
-      this.handleResponse(null),
-      this.handleError
-    );
+    this.api.getPolicies().subscribe(data => {
+      this.policies = data;
+    }, this.handleError);
   }
 
   addPolicy(policy: Policy) {
-    this.api.addPolicy(policy).subscribe(
-        this.handleResponse("Successfully added"),
-        this.handleError
-    );
+    this.api.addPolicy(policy).subscribe(data => {
+      this.addPolicyToArray(policy);
+      this.showMessage("Added successfully");
+    }, this.handleError);
   }
 
   savePolicy(policy: Policy) {
-    this.api.updatePolicy(policy).subscribe(
-        this.handleResponse("Successfully updated"),
-        this.handleError
-    );
+    this.api.updatePolicy(policy).subscribe(data => {
+      this.deletePolicyFromArray(policy);
+      this.addPolicyToArray(policy);
+      this.showMessage("Updated successfully");
+    }, this.handleError);
   }
 
   deletePolicy(policy: Policy) {
-    this.api.deletePolicy(policy.policyNumber).subscribe(
-      this.handleResponse("Deleted successfully"),
-      this.handleError
+    this.api.deletePolicy(policy.policyNumber).subscribe(data => {
+      this.deletePolicyFromArray(policy);
+      this.showMessage("Deleted successfully");
+    }, this.handleError);
+  }
+
+  private deletePolicyFromArray(policy: Policy) {
+    this.policies = this.policies.filter(
+      p => p.policyNumber != policy.policyNumber
     );
   }
 
-  handleResponse(successMessage) {
-    return (data: Policy[]) => {
-      this.policies = data;
-      this.showMessage(successMessage);
-    }
+  private addPolicyToArray(policy: Policy) {
+    this.policies.push(policy);
+    this.policies.sort((a, b) => a.policyNumber - b.policyNumber);
   }
 
   handleError(err) {

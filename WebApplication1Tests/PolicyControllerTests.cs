@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using WebApplication1.Controllers;
 using WebApplication1.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication1Tests
 {
@@ -40,11 +41,14 @@ namespace WebApplication1Tests
                 }
             };
             // Act
-            IList<Policy> response = (IList<Policy>)controller.Add(newPolicy);
+            var response = controller.Add(newPolicy);
 
             // Assert
-            Assert.AreEqual(8, response.Count);
-            Assert.IsTrue(response.IndexOf(newPolicy) > -1);
+            var policies = ((IList<Policy>)repository.Get());
+            Assert.AreEqual(8, policies.Count);
+            Assert.AreEqual(response.Value, newPolicy);
+            Assert.IsTrue(policies.IndexOf(newPolicy) > -1);
+            Assert.IsInstanceOfType(response.Value, typeof(Policy));
         }
 
         [TestMethod]
@@ -64,10 +68,13 @@ namespace WebApplication1Tests
                 }
             };
             // Act
-            IList<Policy> response = (IList<Policy>)controller.Add(newPolicy);
+            var response =controller.Add(newPolicy);
 
             // Assert
-            Assert.AreEqual(7, response.Count);
+            var policies = ((IList<Policy>)repository.Get());
+            Assert.AreEqual(7, policies.Count);
+            Assert.IsTrue(policies.IndexOf(newPolicy) == -1);
+            Assert.IsInstanceOfType(response.Result, typeof(BadRequestResult));
         }
 
 
@@ -89,11 +96,14 @@ namespace WebApplication1Tests
             };
 
             // Act
-            IList<Policy> response = (IList<Policy>)controller.Update(383002, updatePolicy);
+            var response = controller.Update(383002, updatePolicy);
 
             // Assert
-            Assert.AreEqual(7, response.Count);
-            Assert.IsTrue(response.IndexOf(updatePolicy) > -1);
+            var policies = ((IList<Policy>)repository.Get());
+            Assert.AreEqual(7, policies.Count);
+            Assert.AreEqual(response.Value, updatePolicy);
+            Assert.IsTrue(policies.IndexOf(updatePolicy) > -1);
+            Assert.IsInstanceOfType(response.Value, typeof(Policy));
         }
 
 
@@ -115,11 +125,13 @@ namespace WebApplication1Tests
             };
 
             // Act
-            IList<Policy> response = (IList<Policy>)controller.Update(383002, updatePolicy);
+            var response = controller.Update(383002, updatePolicy);
 
             // Assert
-            Assert.AreEqual(7, response.Count);
-            Assert.IsTrue(response.IndexOf(updatePolicy) == -1);
+            var policies = ((IList<Policy>)repository.Get());
+            Assert.AreEqual(7, policies.Count);
+            Assert.IsTrue(policies.IndexOf(updatePolicy) == -1);
+            Assert.IsInstanceOfType(response.Result, typeof(NotFoundResult));
         }
 
         [TestMethod]
@@ -130,10 +142,11 @@ namespace WebApplication1Tests
             var controller = new PolicyController(repository);
 
             // Act
-            IList<Policy> response = (IList<Policy>)controller.Remove(383002);
+            var response = controller.Remove(383002);
 
             // Assert
-            Assert.AreEqual(6, response.Count);
+            Assert.IsTrue(response.Value);
+            Assert.AreEqual(6, ((IList<Policy>)repository.Get()).Count);
         }
 
         [TestMethod]
@@ -144,10 +157,11 @@ namespace WebApplication1Tests
             var controller = new PolicyController(repository);
 
             // Act
-            IList<Policy> response = (IList<Policy>)controller.Remove(111111);
+            var response = controller.Remove(1);
 
             // Assert
-            Assert.AreEqual(7, response.Count);
+            Assert.AreEqual(7, ((IList<Policy>)repository.Get()).Count);
+            Assert.IsInstanceOfType(response.Result, typeof(NotFoundResult));
         }
     }
 }

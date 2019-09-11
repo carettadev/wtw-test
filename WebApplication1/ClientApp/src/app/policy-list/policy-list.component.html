@@ -18,6 +18,7 @@
       secondaryButtonText="Delete"
       (secondaryClick)="deletePolicy($event)"
       (primaryClick)="savePolicy($event)"
+      [attr.data-target]="'policy' + p.policyNumber"
     ></app-policy>
   </ng-container>
 </div>

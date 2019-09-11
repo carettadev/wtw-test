@@ -1,6 +1,6 @@
 import { AppPage } from "./app.po";
 import { protractor } from "protractor/built/ptor";
-import { element, by } from "protractor";
+import { element, by, browser, ExpectedConditions } from "protractor";
 
 describe("workspace-project App", () => {
   let page: AppPage;
@@ -30,20 +30,12 @@ describe("workspace-project App", () => {
       .get(1)
       .click();
     page.getAddPolicyHolderAddButton().click();
-    const policy = page
-      .getPolicyList()
-      .filter((elem, index) => {
-        return elem
-          .element(by.css(".jsCardTitle"))
-          .getText()
-          .then(function(text) {
-            return text === "Policy Number: 123";
-          });
-      })
-      .get(1);
-    expect(policy).toBeDefined();
+    page.waitForElement(page.getPolicyCardWithPolicyNumber("123"));
     //cleanup
-    page.getAnyPolicySecondaryButton(policy).click();
+    page
+      .getPolicyCardWithPolicyNumber("123")
+      .element(by.css(".jsSecondaryButton"))
+      .click();
   });
 
   //TODO: Update

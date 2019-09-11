@@ -80,7 +80,6 @@ describe("PolicyListComponent", () => {
 
   describe("getPolicies", () => {
     it("should return policies", () => {
-      spyOn(component, "handleResponse");
       spyOn(component, "handleError");
       spyOn(component, "showMessage");
       component.getPolicies();
@@ -88,13 +87,11 @@ describe("PolicyListComponent", () => {
       fixture.detectChanges();
       expect(component.policies.length).toEqual(policyResult.length);
       expect(component.handleError).toHaveBeenCalledTimes(0);
-      expect(component.handleResponse).toHaveBeenCalledWith(null);
     });
   });
 
   describe("addPolicy", () => {
-    it("should return policies", () => {
-      spyOn(component, "handleResponse");
+    it("should add a policy", () => {
       spyOn(component, "handleError");
       spyOn(component, "showMessage");
       component.addPolicy({
@@ -107,17 +104,14 @@ describe("PolicyListComponent", () => {
       });
       getTestScheduler().flush(); // flush the observables
       fixture.detectChanges();
-      expect(component.policies.length).toEqual(policyResult.length);
+      expect(component.policies.length).toEqual(3);
       expect(component.handleError).toHaveBeenCalledTimes(0);
-      expect(component.handleResponse).toHaveBeenCalledWith(
-        "Successfully added"
-      );
+      expect(component.showMessage).toHaveBeenCalledWith("Added successfully");
     });
   });
 
   describe("savePolicy", () => {
-    it("should return policies", () => {
-      spyOn(component, "handleResponse");
+    it("should update a policy", () => {
       spyOn(component, "handleError");
       spyOn(component, "showMessage");
       component.savePolicy({
@@ -131,17 +125,16 @@ describe("PolicyListComponent", () => {
       getTestScheduler().flush(); // flush the observables
       fixture.detectChanges();
 
-      expect(component.policies.length).toEqual(policyResult.length);
+      expect(component.policies.length).toEqual(2);
       expect(component.handleError).toHaveBeenCalledTimes(0);
-      expect(component.handleResponse).toHaveBeenCalledWith(
-        "Successfully updated"
+      expect(component.showMessage).toHaveBeenCalledWith(
+        "Updated successfully"
       );
     });
   });
 
   describe("deletePolicy", () => {
-    it("should return policies", () => {
-      spyOn(component, "handleResponse");
+    it("should remove a policy", () => {
       spyOn(component, "handleError");
       spyOn(component, "showMessage");
       component.deletePolicy({
@@ -155,9 +148,9 @@ describe("PolicyListComponent", () => {
       getTestScheduler().flush(); // flush the observables
       fixture.detectChanges();
 
-      expect(component.policies.length).toEqual(policyResult.length);
+      expect(component.policies.length).toEqual(1);
       expect(component.handleError).toHaveBeenCalledTimes(0);
-      expect(component.handleResponse).toHaveBeenCalledWith(
+      expect(component.showMessage).toHaveBeenCalledWith(
         "Deleted successfully"
       );
     });
@@ -188,18 +181,18 @@ class MockPolicyService {
     return policies$;
   }
 
-  public addPolicy(policy: Policy): Observable<Policy[]> {
-    const policies$ = cold("--x|", { x: policyResult });
+  public addPolicy(policy: Policy): Observable<Policy> {
+    const policies$ = cold("--x|", { x: policy });
     return policies$;
   }
 
-  public updatePolicy(policy: Policy): Observable<Policy[]> {
-    const policies$ = cold("--x|", { x: policyResult });
+  public updatePolicy(policy: Policy): Observable<Policy> {
+    const policies$ = cold("--x|", { x: policy });
     return policies$;
   }
 
-  public deletePolicy(policyNumber: number): Observable<Policy[]> {
-    const policies$ = cold("--x|", { x: policyResult });
+  public deletePolicy(policyNumber: number): Observable<Policy> {
+    const policies$ = cold("--x|", { x: true });
     return policies$;
   }
 }

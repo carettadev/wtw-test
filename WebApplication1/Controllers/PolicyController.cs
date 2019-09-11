@@ -23,7 +23,7 @@ namespace WebApplication1.Controllers
 
 
         [HttpPut("{policyNumber}")]
-        public IEnumerable<Policy> Update(int policyNumber, [FromBody]Policy policy)
+        public ActionResult<Policy> Update(int policyNumber, [FromBody]Policy policy)
         {
             try
             {
@@ -32,17 +32,21 @@ namespace WebApplication1.Controllers
                 {
                     _policyRepository.Update(policy);
                 }
+                else
+                {
+                    return NotFound();
+                }
             }
             catch (Exception ex)
             {
                 // log exception
                 throw;
             }
-            return Get();
+            return policy;
         }
 
         [HttpPost]
-        public IEnumerable<Policy> Add([FromBody]Policy policy)
+        public ActionResult<Policy> Add([FromBody]Policy policy)
         {
             try
             {
@@ -51,17 +55,21 @@ namespace WebApplication1.Controllers
                 {
                     _policyRepository.Add(policy);
                 }
+                else
+                {
+                    return BadRequest();
+                }
             }
             catch (Exception ex)
             {
                 // log exception
                 throw;
             }
-            return Get();
+            return policy;
         }
 
         [HttpDelete("{policyNumber}")]
-        public IEnumerable<Policy> Remove(int policyNumber)
+        public ActionResult<Boolean> Remove(int policyNumber)
         {
             try
             {
@@ -70,13 +78,17 @@ namespace WebApplication1.Controllers
                 {
                     _policyRepository.Remove(policyNumber);
                 }
+                else
+                {
+                    return NotFound();
+                }
             }
             catch (Exception ex)
             {
                 // log exception
                 throw;
             }
-            return Get();
+            return true;
         }
     }
 }

@@ -37,15 +37,15 @@ export class PolicyService {
     };
   }
 
-  addPolicy(policy: Policy): Observable<Policy[]> {
+  addPolicy(policy: Policy): Observable<Policy> {
     return this.http
       .post(endpoint + "policy/", JSON.stringify(policy), httpOptions)
       .pipe(
-        map((data: any[]) => data.map((item: any) => this.mapPolicy(item)))
+        map((item: any) => this.mapPolicy(item))
       );
   }
 
-  updatePolicy(policy: Policy): Observable<Policy[]> {
+  updatePolicy(policy: Policy): Observable<Policy> {
     return this.http
       .put(
         endpoint + "policy/" + policy.policyNumber,
@@ -53,15 +53,12 @@ export class PolicyService {
         httpOptions
       )
       .pipe(
-        map((data: any[]) => data.map((item: any) => this.mapPolicy(item)))
+        map((item: any) => this.mapPolicy(item))
       );
   }
 
-  deletePolicy(policyNumber: number): Observable<Policy[]> {
+  deletePolicy(policyNumber: number): Observable<boolean> {
     return this.http
-      .delete<any>(endpoint + "policy/" + policyNumber, httpOptions)
-      .pipe(
-        map((data: any[]) => data.map((item: any) => this.mapPolicy(item)))
-      );
+      .delete<any>(endpoint + "policy/" + policyNumber, httpOptions);
   }
 }

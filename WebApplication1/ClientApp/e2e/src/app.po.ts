@@ -79,4 +79,10 @@ export class AppPage {
   getAnyPolicySecondaryButton(policy: ElementFinder) {
     return policy.element(by.css(".jsSecondaryButton"));
   }
+
+  getPolicyCardWithPolicyNumber(policyNumber: string): ElementFinder {
+    return element(
+      by.xpath("//app-policy[@data-target='policy" + policyNumber + "']")
+    );
+  }
 }
