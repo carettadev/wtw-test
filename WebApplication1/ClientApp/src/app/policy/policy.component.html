@@ -1,7 +1,7 @@
 <mat-card class="example-card">
   <form #policyForm="ngForm">
     <mat-card-header class="example-card__header">
-      <mat-card-title *ngIf="!addPolicy"
+      <mat-card-title *ngIf="!addPolicy" class="jsCardTitle"
         >Policy Number:&nbsp;{{ policy.policyNumber }}</mat-card-title
       >
       <mat-form-field *ngIf="addPolicy">
@@ -10,7 +10,7 @@
           matInput
           type="number"
           required
-          class="form-control"
+          class="form-control jsPolicyNumberInput"
           id="policyNumber"
           [(ngModel)]="policy.policyNumber"
           name="policyNumber"
@@ -26,7 +26,7 @@
             <input
               matInput
               required
-              class="form-control"
+              class="form-control jsPolicyNameInput"
               id="name"
               [(ngModel)]="policy.policyHolder.name"
               name="name"
@@ -40,7 +40,7 @@
               matInput
               type="number"
               required
-              class="form-control"
+              class="form-control jsPolicyAgeInput"
               id="age"
               [(ngModel)]="policy.policyHolder.age"
               name="age"
@@ -53,7 +53,7 @@
             <select
               matNativeControl
               required
-              class="form-control"
+              class="form-control jsPolicyGenderInput"
               id="gender"
               [(ngModel)]="policy.policyHolder.gender"
               name="gender"
