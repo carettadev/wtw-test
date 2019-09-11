@@ -13,6 +13,7 @@ import {
   HttpClientTestingModule,
   HttpTestingController
 } from "@angular/common/http/testing";
+import { cold, getTestScheduler } from "jasmine-marbles";
 
 import {
   MatCardModule,
@@ -83,11 +84,11 @@ describe("PolicyListComponent", () => {
       spyOn(component, "handleError");
       spyOn(component, "showMessage");
       component.getPolicies();
+      getTestScheduler().flush(); // flush the observables
       fixture.detectChanges();
-      expect(component.handleResponse).toHaveBeenCalled();
       expect(component.policies.length).toEqual(policyResult.length);
       expect(component.handleError).toHaveBeenCalledTimes(0);
-      expect(component.showMessage).toHaveBeenCalledWith(null);
+      expect(component.handleResponse).toHaveBeenCalledWith(null);
     });
   });
 
@@ -104,11 +105,13 @@ describe("PolicyListComponent", () => {
           gender: "1"
         }
       });
+      getTestScheduler().flush(); // flush the observables
       fixture.detectChanges();
-      expect(component.handleResponse).toHaveBeenCalled();
       expect(component.policies.length).toEqual(policyResult.length);
       expect(component.handleError).toHaveBeenCalledTimes(0);
-      expect(component.showMessage).toHaveBeenCalledWith("Successfully added");
+      expect(component.handleResponse).toHaveBeenCalledWith(
+        "Successfully added"
+      );
     });
   });
 
@@ -125,12 +128,12 @@ describe("PolicyListComponent", () => {
           gender: "1"
         }
       });
+      getTestScheduler().flush(); // flush the observables
       fixture.detectChanges();
 
-      expect(component.handleResponse).toHaveBeenCalled();
       expect(component.policies.length).toEqual(policyResult.length);
       expect(component.handleError).toHaveBeenCalledTimes(0);
-      expect(component.showMessage).toHaveBeenCalledWith(
+      expect(component.handleResponse).toHaveBeenCalledWith(
         "Successfully updated"
       );
     });
@@ -149,12 +152,12 @@ describe("PolicyListComponent", () => {
           gender: "1"
         }
       });
+      getTestScheduler().flush(); // flush the observables
       fixture.detectChanges();
 
-      expect(component.handleResponse).toHaveBeenCalled();
       expect(component.policies.length).toEqual(policyResult.length);
       expect(component.handleError).toHaveBeenCalledTimes(0);
-      expect(component.showMessage).toHaveBeenCalledWith(
+      expect(component.handleResponse).toHaveBeenCalledWith(
         "Deleted successfully"
       );
     });
@@ -181,18 +184,22 @@ const policyResult: Policy[] = [
 ];
 class MockPolicyService {
   public getPolicies(): Observable<Policy[]> {
-    return of(policyResult);
+    const policies$ = cold("--x|", { x: policyResult });
+    return policies$;
   }
 
   public addPolicy(policy: Policy): Observable<Policy[]> {
-    return of(policyResult);
+    const policies$ = cold("--x|", { x: policyResult });
+    return policies$;
   }
 
   public updatePolicy(policy: Policy): Observable<Policy[]> {
-    return of(policyResult);
+    const policies$ = cold("--x|", { x: policyResult });
+    return policies$;
   }
 
   public deletePolicy(policyNumber: number): Observable<Policy[]> {
-    return of(policyResult);
+    const policies$ = cold("--x|", { x: policyResult });
+    return policies$;
   }
 }
