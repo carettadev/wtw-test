@@ -10,4 +10,9 @@ describe("workspace-project App", () => {
   it("should display welcome message", () => {
     page.navigateTo();
   });
+
+  it("should open an add policy dialog when clicking add new button", () => {
+    page.navigateTo();
+    page.getAddButton().click();
+  });
 });
