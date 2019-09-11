@@ -1,0 +1,9 @@
+<div mat-dialog-content class="jsAddPolicyPopUp">
+  <app-policy
+    [policy]="data"
+    [addPolicy]="true"
+    primaryButtonText="Add"
+    (secondaryClick)="onCancelClick($event)"
+    (primaryClick)="addPolicy($event)"
+  ></app-policy>
+</div>

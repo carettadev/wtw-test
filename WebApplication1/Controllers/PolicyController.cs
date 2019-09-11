@@ -18,7 +18,7 @@ namespace WebApplication1.Controllers
 
         public IEnumerable<Policy> Get()
         {
-            return _policyRepository.Get();
+            return _policyRepository.Get().OrderBy(policy => policy.PolicyNumber).ToList<Policy>();
         }
 
 
@@ -27,7 +27,8 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                if (policyNumber == policy.PolicyNumber)
+                //ensure we have a valid policy and it already exists/updatable
+                if (policy != null && policyNumber == policy.PolicyNumber && Get().Any(p => p.PolicyNumber == policyNumber))
                 {
                     _policyRepository.Update(policy);
                 }
@@ -45,7 +46,11 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                _policyRepository.Add(policy);
+                //ensure we have a valid policy and it doesn't already exist
+                if (policy != null && !Get().Any(p => p.PolicyNumber == policy.PolicyNumber))
+                {
+                    _policyRepository.Add(policy);
+                }
             }
             catch (Exception ex)
             {
@@ -60,7 +65,11 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                _policyRepository.Remove(policyNumber);
+                //ensure policy exists before deleting
+                if (Get().Any(p => p.PolicyNumber == policyNumber))
+                {
+                    _policyRepository.Remove(policyNumber);
+                }
             }
             catch (Exception ex)
             {

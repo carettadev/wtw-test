@@ -1,5 +1,25 @@
 # ClientApp
 
+NOTES On Solution:
+
+
+Server Side
+  - Only basic unit tests
+  - Made an assumption that the repository code could not be changed
+  - Doesn't return any detailed errors/HTTP Codes to client when an exception occurs
+  - No exception logging
+  - No server side validation
+Client Side
+  - Needs more validation on inputs and better user error messages
+  - Needs warning dialog on delete to confirm action with user
+  - better error logging required. just logging to console at the moment
+  - Was going to use NgRx but thought it overkill for this
+  - Could write more unit tests but ran out of time
+  - Had many issues with getting e2e tests working due to npm/node/package version clashses. Should be OK now.
+  - protractor tests should be against mocks. disabled CORS on server side to get around this
+
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.3.
 
 ## Development server

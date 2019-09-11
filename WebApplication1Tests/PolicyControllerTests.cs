@@ -48,6 +48,30 @@ namespace WebApplication1Tests
         }
 
         [TestMethod]
+        public void CannotAddAPolicyAlreadyExisting()
+        {
+            // Arrange
+            var repository = new PolicyRepository();
+            var controller = new PolicyController(repository);
+            var newPolicy = new Policy()
+            {
+                PolicyNumber = 462946,
+                PolicyHolder = new PolicyHolder()
+                {
+                    Name = "Peter Parker",
+                    Age = 34,
+                    Gender = Gender.Male
+                }
+            };
+            // Act
+            IList<Policy> response = (IList<Policy>)controller.Add(newPolicy);
+
+            // Assert
+            Assert.AreEqual(7, response.Count);
+        }
+
+
+        [TestMethod]
         public void UpdateAPolicy()
         {
             // Arrange
@@ -74,6 +98,31 @@ namespace WebApplication1Tests
 
 
         [TestMethod]
+        public void CannotUpdateAPolicyThatDoesntExist()
+        {
+            // Arrange
+            var repository = new PolicyRepository();
+            var controller = new PolicyController(repository);
+            var updatePolicy = new Policy()
+            {
+                PolicyNumber = 1111111,
+                PolicyHolder = new PolicyHolder()
+                {
+                    Name = "Peter Parker",
+                    Age = 34,
+                    Gender = Gender.Male
+                }
+            };
+
+            // Act
+            IList<Policy> response = (IList<Policy>)controller.Update(383002, updatePolicy);
+
+            // Assert
+            Assert.AreEqual(7, response.Count);
+            Assert.IsTrue(response.IndexOf(updatePolicy) == -1);
+        }
+
+        [TestMethod]
         public void DeleteAPolicy()
         {
             // Arrange
@@ -85,6 +134,20 @@ namespace WebApplication1Tests
 
             // Assert
             Assert.AreEqual(6, response.Count);
+        }
+
+        [TestMethod]
+        public void CannotDeleteAPolicyThatDoesntExist()
+        {
+            // Arrange
+            var repository = new PolicyRepository();
+            var controller = new PolicyController(repository);
+
+            // Act
+            IList<Policy> response = (IList<Policy>)controller.Remove(111111);
+
+            // Assert
+            Assert.AreEqual(7, response.Count);
         }
     }
 }
